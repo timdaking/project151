@@ -1,3 +1,4 @@
+
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
@@ -19,154 +20,193 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
 
+public class Board extends JPanel implements Runnable, MouseListener {
 
-public class Board  extends JPanel implements Runnable, MouseListener
-{
-boolean ingame = true;
-private Dimension d;
-int BOARD_WIDTH=500;
-int BOARD_HEIGHT=500;
-int x = 0;
-BufferedImage img;
+    boolean ingame = true;
+    private Dimension d;
+    int BOARD_WIDTH = 500;
+    int BOARD_HEIGHT = 500;
+    int x = 0;
+    BufferedImage img;
 //String message = "Click Board to Start";
- private Thread animator;
- Drone p;
+    private Thread animator;
+    Drone p;
 
- 
-    public Board()
-    {
-          addKeyListener(new TAdapter());
-         addMouseListener(this);
+    public Board() {
+        addKeyListener(new TAdapter());
+        addMouseListener(this);
         setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
-        p = new Drone(BOARD_WIDTH-450,BOARD_HEIGHT/2,3);
+        p = new Drone(BOARD_WIDTH - 450, BOARD_HEIGHT / 2, 3);
         setBackground(Color.black);
-       
-           /*         
+
+        /*         
              try {
                 img = ImageIO.read(this.getClass().getResource("mount.jpg"));
             } catch (IOException e) {
                  System.out.println("Image could not be read");
             // System.exit(1);
             }
-            */
-            if (animator == null || !ingame) {
+         */
+        if (animator == null || !ingame) {
             animator = new Thread(this);
             animator.start();
-            }
-                    
-  
+        }
+
         setDoubleBuffered(true);
     }
-    
-    public void paint(Graphics g)
-{
-super.paint(g);
 
-g.setColor(Color.white);
-g.fillRect(0, 0, d.width, d.height);
+    public void paint(Graphics g) {
+        super.paint(g);
+
+        g.setColor(Color.white);
+        g.fillRect(0, 0, d.width, d.height);
 //g.fillOval(x,y,r,r);
 
-g.setColor(Color.blue);
-g.fillRect(p.x, p.y, 20, 20);
-if(p.moveUp==true)
-	p.y -= p.speed;
-if(p.moveDown==true)
-	p.y += p.speed;
+        g.setColor(Color.blue);
+        g.fillRect(p.x, p.y, 20, 20);
+
+        if (p.moveUp == true) {
+            p.y -= p.speed;
+        }
+
+        if (p.moveDown == true) {
+            p.y += p.speed;
+        }
+
+        if (p.moveRight == true) {
+            p.x += p.speed;
+        }
+
+        if (p.moveLeft == true) {
+            p.x -= p.speed;
+        }
+
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
         g.setColor(Color.black);
-       g.setFont(small);
+        g.setFont(small);
         //g.drawString(message, 10, d.height-60);
 
-    if (ingame) {
-        
-    
-        
-       
-        
-    // g.drawImage(img,0,0,200,200 ,null);
-     
-    
-   
+        if (ingame) {
+
+            // g.drawImage(img,0,0,200,200 ,null);
+        }
+        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
     }
-Toolkit.getDefaultToolkit().sync();
-g.dispose();
-}
-private class TAdapter extends KeyAdapter {
 
-public void keyReleased(KeyEvent e) {
-     int key = e.getKeyCode();
-     p.moveUp = false;
-     p.moveDown = false;
-     
-}
+    private class TAdapter extends KeyAdapter {
 
-public void keyPressed(KeyEvent e) {
-//System.out.println( e.getKeyCode());
-   // message = "Key Pressed: " + e.getKeyCode();
-    int key = e.getKeyCode();
-        if(key==38){
-        	p.moveUp=true;
+        public void keyReleased(KeyEvent e) {
+            int key = e.getKeyCode();
+
+            switch (key) {
+                case 37:
+                    p.moveLeft = false;
+                    break;
+                case 38:
+                    p.moveUp = false;
+                    break;
+                case 39:
+                    p.moveRight = false;
+                    break;
+                case 40:
+                    p.moveDown = false;
+                    break;
+                case 65:
+                    p.moveLeft = false;
+                    break;
+                case 87:
+                    p.moveUp = false;
+                    break;
+                case 68:
+                    p.moveRight = false;
+                    break;
+                case 83:
+                    p.moveDown = false;
+                    break;
+                default:
+                    break;
+            }
         }
-        if(key==40){
-        	p.moveDown=true;
+
+        public void keyPressed(KeyEvent e) {
+            int key = e.getKeyCode();
+
+            switch (key) {
+                case 37:
+                    p.moveLeft = true;
+                    break;
+                case 38:
+                    p.moveUp = true;
+                    break;
+                case 39:
+                    p.moveRight = true;
+                    break;
+                case 40:
+                    p.moveDown = true;
+                    break;
+                case 65:
+                    p.moveLeft = true;
+                    break;
+                case 87:
+                    p.moveUp = true;
+                    break;
+                case 68:
+                    p.moveRight = true;
+                    break;
+                case 83:
+                    p.moveDown = true;
+                    break;
+                default:
+                    break;
+            }
         }
-        
-       
+    }
 
-}
+    public void mousePressed(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
 
-}
+    }
 
+    public void mouseReleased(MouseEvent e) {
 
+    }
 
+    public void mouseEntered(MouseEvent e) {
 
-public void mousePressed(MouseEvent e) {
-    int x = e.getX();
-     int y = e.getY();
+    }
 
-}
+    public void mouseExited(MouseEvent e) {
 
-public void mouseReleased(MouseEvent e) {
+    }
 
-}
+    public void mouseClicked(MouseEvent e) {
 
-public void mouseEntered(MouseEvent e) {
+    }
 
-}
+    public void run() {
 
-public void mouseExited(MouseEvent e) {
+        long beforeTime, timeDiff, sleep;
 
-}
+        beforeTime = System.currentTimeMillis();
+        int animationDelay = 5;
+        long time
+                = System.currentTimeMillis();
+        while (true) {//infinite loop
+            // spriteManager.update();
+            repaint();
+            try {
+                time += animationDelay;
+                Thread.sleep(Math.max(0, time
+                        - System.currentTimeMillis()));
+            } catch (InterruptedException e) {
+                System.out.println(e);
+            }//end catch
+        }//end while loop
 
-public void mouseClicked(MouseEvent e) {
-
-}
-
-public void run() {
-
-long beforeTime, timeDiff, sleep;
-
-beforeTime = System.currentTimeMillis();
- int animationDelay = 5;
- long time = 
-            System.currentTimeMillis();
-    while (true) {//infinite loop
-     // spriteManager.update();
-      repaint();
-      try {
-        time += animationDelay;
-        Thread.sleep(Math.max(0,time - 
-          System.currentTimeMillis()));
-      }catch (InterruptedException e) {
-        System.out.println(e);
-      }//end catch
-    }//end while loop
-
-    
-
-
-}//end of run
+    }//end of run
 
 }//end of class
