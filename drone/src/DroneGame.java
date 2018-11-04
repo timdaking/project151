@@ -3,10 +3,10 @@ import javax.swing.JFrame;
 public class DroneGame extends JFrame {
 	public DroneGame()
 	{
-		add(new Board());
+            add(new Board());
 	    setTitle("DroneGame");
 	    setDefaultCloseOperation(EXIT_ON_CLOSE);
-	    setSize(500,500);
+	    setSize(1000,1000);
 	    setLocationRelativeTo(null);
 	    setVisible(true);
 	    setResizable(false);

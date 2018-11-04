@@ -6,9 +6,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
 import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,8 +26,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
     boolean ingame = true;
     private Dimension d;
-    int BOARD_WIDTH = 500;
-    int BOARD_HEIGHT = 500;
+    static final int BOARD_WIDTH = 1000;
+    static final int BOARD_HEIGHT = 1000;
     int x = 0;
     BufferedImage img;
 //String message = "Click Board to Start";
@@ -37,7 +39,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         addMouseListener(this);
         setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
-        p = new Drone(BOARD_WIDTH - 450, BOARD_HEIGHT / 2, 3);
+        p = new Drone(BOARD_WIDTH - 850, BOARD_HEIGHT / 2, 1.5, 0.1);
         setBackground(Color.black);
 
         /*         
@@ -64,23 +66,36 @@ public class Board extends JPanel implements Runnable, MouseListener {
 //g.fillOval(x,y,r,r);
 
         g.setColor(Color.blue);
-        g.fillRect(p.x, p.y, 20, 20);
+        Graphics2D g1 = (Graphics2D) g;
+        Rectangle2D rect = new Rectangle2D.Double(p.x, p.y, 20, 20);
+        g1.fill(rect);
 
         if (p.moveUp == true) {
-            p.y -= p.speed;
+            p.onKeyAction();
+            p.y -= p.accelerate();
         }
 
         if (p.moveDown == true) {
-            p.y += p.speed;
+            p.onKeyAction();
+            p.y -= p.decelerate();
         }
 
         if (p.moveRight == true) {
-            p.x += p.speed;
+            p.onKeyAction();
+            p.x += p.accelerate();
+            
         }
 
         if (p.moveLeft == true) {
-            p.x -= p.speed;
+            p.onKeyAction();
+            p.x -= p.accelerate();
         }
+        
+        if (!(p.moveUp || p.moveDown || p.moveLeft || p.moveRight)){
+            p.offKeyAction();
+        }
+        p.y -= p.decelerateGravity();
+        System.out.println(p.getCharacterSpeed());
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
@@ -129,6 +144,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
                 default:
                     break;
             }
+            
         }
 
         public void keyPressed(KeyEvent e) {
@@ -162,6 +178,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
                 default:
                     break;
             }
+            
+            
         }
     }
 

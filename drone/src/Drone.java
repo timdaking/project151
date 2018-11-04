@@ -5,8 +5,8 @@ public class Drone extends Character{
         boolean moveRight;
         boolean moveLeft;
 	
-	public Drone(int x, int y, int s) {
-		super (x,y,s);
+	public Drone(double x, double y, double s, double a) {
+		super (x,y,s,a);
                 
                 moveUp = false;
                 moveDown = false;

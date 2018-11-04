@@ -1,13 +1,20 @@
 
 public class Character {
-	int x;
-	int y;
-	int speed;
+	double x;
+	double y;
+	double characterMaxSpeed;
+        private double characterSpeed;
+        private final double acceleration;
+        private double deltaA;
+        private static final double GRAVITY = 0.00025;
 	
-	public Character(int x, int y, int speed) {
+	public Character(double x,double y, double characterMaxSpeed, double acceleration) {
 		this.x = x;
 		this.y = y;
-		this.speed = speed;
+		this.characterMaxSpeed = characterMaxSpeed;
+                this.acceleration = acceleration;
+                deltaA = acceleration;
+                characterSpeed = 0;
 	}
         
         void setX(int x){
@@ -18,15 +25,46 @@ public class Character {
             this.y = y;
         }
         
-        int getY(){
+        double getY(){
             return y;
         }
         
-        int getX(){
+        double getX(){
             return x;
         }
         
-        int getSpeed(){
-            return speed;
+        void onKeyAction(){
+            deltaA = acceleration;
+        }
+                
+        void offKeyAction(){
+            deltaA = 0;
+        }
+        
+        double getSpeed(){
+            return characterSpeed;
+        }
+        
+        double accelerate(){
+            if (characterSpeed < characterMaxSpeed){
+                characterSpeed += deltaA;
+            }
+            return characterSpeed;
+        }
+        
+        double decelerate(){
+            if (characterSpeed > -characterMaxSpeed){
+                characterSpeed -= deltaA;
+            }
+            return characterSpeed;
+        }
+        
+        double decelerateGravity(){
+            characterSpeed -= GRAVITY;
+            return characterSpeed;
+        }
+        
+        double getCharacterSpeed(){
+            return characterSpeed;
         }
 }
