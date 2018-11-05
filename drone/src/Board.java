@@ -39,7 +39,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         addMouseListener(this);
         setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
-        p = new Drone(BOARD_WIDTH - 850, BOARD_HEIGHT / 2, 1.5, 0.1);
+        p = new Drone(BOARD_WIDTH - 850, BOARD_HEIGHT / 2, 1.5, 0.05, true, true);
         setBackground(Color.black);
 
         /*         
@@ -69,33 +69,31 @@ public class Board extends JPanel implements Runnable, MouseListener {
         Graphics2D g1 = (Graphics2D) g;
         Rectangle2D rect = new Rectangle2D.Double(p.x, p.y, 20, 20);
         g1.fill(rect);
-
+        
+        // Takes care of drone movement based on user input
         if (p.moveUp == true) {
             p.onKeyAction();
-            p.y -= p.accelerate();
+            p.y -= p.accelerateY();
         }
 
         if (p.moveDown == true) {
             p.onKeyAction();
-            p.y -= p.decelerate();
+            p.y -= p.decelerateY();
         }
 
         if (p.moveRight == true) {
             p.onKeyAction();
-            p.x += p.accelerate();
-            
+            p.x += p.accelerateX();
         }
 
         if (p.moveLeft == true) {
             p.onKeyAction();
-            p.x -= p.accelerate();
+            p.x += p.decelerateX();
         }
         
-        if (!(p.moveUp || p.moveDown || p.moveLeft || p.moveRight)){
-            p.offKeyAction();
-        }
+        // Applies gravity and friction to the drone
         p.y -= p.decelerateGravity();
-        System.out.println(p.getCharacterSpeed());
+        p.x += p.decelerateFriction();
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
@@ -119,27 +117,35 @@ public class Board extends JPanel implements Runnable, MouseListener {
             switch (key) {
                 case 37:
                     p.moveLeft = false;
+                    p.zeroDeltaAx();
                     break;
                 case 38:
                     p.moveUp = false;
+                    p.zeroDeltaAy();
                     break;
                 case 39:
                     p.moveRight = false;
+                    p.zeroDeltaAx();
                     break;
                 case 40:
                     p.moveDown = false;
+                    p.zeroDeltaAy();
                     break;
                 case 65:
                     p.moveLeft = false;
+                    p.zeroDeltaAx();
                     break;
                 case 87:
                     p.moveUp = false;
+                    p.zeroDeltaAy();
                     break;
                 case 68:
                     p.moveRight = false;
+                    p.zeroDeltaAx();
                     break;
                 case 83:
                     p.moveDown = false;
+                    p.zeroDeltaAy();
                     break;
                 default:
                     break;
@@ -184,8 +190,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
     }
 
     public void mousePressed(MouseEvent e) {
+        /*
         int x = e.getX();
         int y = e.getY();
+        */
 
     }
 
