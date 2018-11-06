@@ -8,8 +8,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import javax.swing.Timer;
 import java.util.ArrayList;
@@ -26,8 +24,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
     boolean ingame = true;
     private Dimension d;
-    static final int BOARD_WIDTH = 1000;
-    static final int BOARD_HEIGHT = 1000;
+    static final int BOARD_WIDTH = 10000;
+    static final int BOARD_HEIGHT = 10000;
     int x = 0;
     BufferedImage img;
 //String message = "Click Board to Start";
@@ -35,11 +33,12 @@ public class Board extends JPanel implements Runnable, MouseListener {
     Drone p;
 
     public Board() {
-        addKeyListener(new TAdapter());
         addMouseListener(this);
         setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
-        p = new Drone(BOARD_WIDTH - 850, BOARD_HEIGHT / 2, 1.5, 0.05, true, true);
+        
+        // Initializes drone and adds it to HashSet
+        p = new Drone(300, 850 / 2, 1.5, 0.05, true, true);
         setBackground(Color.black);
 
         /*         
@@ -108,85 +107,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
     }
-
-    private class TAdapter extends KeyAdapter {
-
-        public void keyReleased(KeyEvent e) {
-            int key = e.getKeyCode();
-
-            switch (key) {
-                case 37:
-                    p.moveLeft = false;
-                    p.zeroDeltaAx();
-                    break;
-                case 38:
-                    p.moveUp = false;
-                    p.zeroDeltaAy();
-                    break;
-                case 39:
-                    p.moveRight = false;
-                    p.zeroDeltaAx();
-                    break;
-                case 40:
-                    p.moveDown = false;
-                    p.zeroDeltaAy();
-                    break;
-                case 65:
-                    p.moveLeft = false;
-                    p.zeroDeltaAx();
-                    break;
-                case 87:
-                    p.moveUp = false;
-                    p.zeroDeltaAy();
-                    break;
-                case 68:
-                    p.moveRight = false;
-                    p.zeroDeltaAx();
-                    break;
-                case 83:
-                    p.moveDown = false;
-                    p.zeroDeltaAy();
-                    break;
-                default:
-                    break;
-            }
-            
-        }
-
-        public void keyPressed(KeyEvent e) {
-            int key = e.getKeyCode();
-
-            switch (key) {
-                case 37:
-                    p.moveLeft = true;
-                    break;
-                case 38:
-                    p.moveUp = true;
-                    break;
-                case 39:
-                    p.moveRight = true;
-                    break;
-                case 40:
-                    p.moveDown = true;
-                    break;
-                case 65:
-                    p.moveLeft = true;
-                    break;
-                case 87:
-                    p.moveUp = true;
-                    break;
-                case 68:
-                    p.moveRight = true;
-                    break;
-                case 83:
-                    p.moveDown = true;
-                    break;
-                default:
-                    break;
-            }
-            
-            
-        }
+    
+    Drone getDrone(){
+        return p;
     }
 
     public void mousePressed(MouseEvent e) {
