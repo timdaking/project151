@@ -1,8 +1,18 @@
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+
+
 public class Character {
 	double x;
 	double y;
 	double maxSpeed;
+        boolean moveUp;
+        boolean moveDown;
+        boolean moveRight;
+        boolean moveLeft;
         private double yVelocity;
         private double xVelocity;
         private final double acceleration;
@@ -21,6 +31,11 @@ public class Character {
                 yVelocity = 0;
                 xVelocity = 0;
                 
+                moveUp = false;
+                moveDown = false;
+                moveRight = false;
+                moveLeft = false;
+                
                 //Sets gravity
                 if (hasGravity){
                     GRAVITY = 0.009;
@@ -35,6 +50,18 @@ public class Character {
                     FRICTION = 0;
                 }
 	}
+        
+        private Graphics2D constructDefaultCharacter(Graphics g){
+            Graphics2D g1 = (Graphics2D) g;
+            g.setColor(Color.BLUE);
+            Rectangle2D rect = new Rectangle2D.Double(getX(), getY(), 20, 20);
+            g1.fill(rect);
+            return g1;
+        }
+        
+        Graphics2D getGraphic(Graphics g){
+            return constructDefaultCharacter(g);
+        }
         
         void setX(int x){
             this.x = x;
@@ -96,7 +123,11 @@ public class Character {
          */
         double accelerateX(){
             if (xVelocity < maxSpeed){
-                xVelocity += deltaAx;
+                if (xVelocity + deltaAx < maxSpeed){
+                    xVelocity += deltaAx;
+                } else {
+                   xVelocity = maxSpeed; 
+                }
             }
             return xVelocity;
         }
@@ -107,7 +138,11 @@ public class Character {
          */
         double decelerateX(){
             if (xVelocity > -maxSpeed){
-                xVelocity -= deltaAx;
+                if (xVelocity - deltaAx > -maxSpeed){
+                    xVelocity -= deltaAx;
+                } else {
+                    xVelocity = -maxSpeed;
+                }
             }
             return xVelocity;
         }
@@ -118,7 +153,11 @@ public class Character {
          */
         double accelerateY(){
             if (yVelocity < maxSpeed){
-                yVelocity += deltaAy;
+                if (yVelocity + deltaAy < maxSpeed){
+                    yVelocity += deltaAy;
+                } else {
+                    yVelocity = maxSpeed;
+                }
             }
             return yVelocity;
         }
@@ -129,7 +168,11 @@ public class Character {
          */
         double decelerateY(){
             if (yVelocity > -maxSpeed){
-                yVelocity -= deltaAy;
+                if (yVelocity - deltaAy > -maxSpeed){
+                    yVelocity -= deltaAy;
+                } else {
+                    yVelocity = -maxSpeed;
+                }
             }
             return yVelocity;
         }

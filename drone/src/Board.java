@@ -30,7 +30,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
     BufferedImage img;
 //String message = "Click Board to Start";
     private Thread animator;
-    Drone p;
+    private Drone p;
+    private Airplane a;
 
     public Board() {
         addMouseListener(this);
@@ -39,6 +40,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         
         // Initializes drone and adds it to HashSet
         p = new Drone(300, 850 / 2, 1.5, 0.05, true, true);
+        a = new Airplane(850, 500, 0.03, 1.0, false, false);
         setBackground(Color.black);
 
         /*         
@@ -59,15 +61,18 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
     public void paint(Graphics g) {
         super.paint(g);
-
+        
+        // Background color
         g.setColor(Color.white);
         g.fillRect(0, 0, d.width, d.height);
 //g.fillOval(x,y,r,r);
-
-        g.setColor(Color.blue);
-        Graphics2D g1 = (Graphics2D) g;
-        Rectangle2D rect = new Rectangle2D.Double(p.x, p.y, 20, 20);
-        g1.fill(rect);
+        
+        // Drone
+        g = p.getGraphic(g);
+        
+        // Airplane
+        g = a.getGraphic(g);
+        a.x += a.decelerateX();
         
         // Takes care of drone movement based on user input
         if (p.moveUp == true) {
