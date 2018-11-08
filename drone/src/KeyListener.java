@@ -20,7 +20,12 @@ public class KeyListener extends KeyAdapter {
     KeyListener(DroneGame dg) {
         this.dg = dg;
         this.b = dg.getBoard();
-        p = b.getDrone();
+
+        for (Character c : b.getCharacters()) {
+            if (c.isDrone()) {
+                p = (Drone) c;
+            }
+        }
     }
 
     @Override
@@ -82,7 +87,7 @@ public class KeyListener extends KeyAdapter {
                 
                 dg.setVisible(true);
                 break;
-                */
+                 */
                 System.exit(0);
             case 37:
                 p.moveLeft = true;

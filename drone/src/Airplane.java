@@ -12,6 +12,7 @@ public class Airplane extends Character {
     
     Airplane(double x, double y, double maxSpeed, double acceleration, boolean hasGravity, boolean hasFriction) {
         super(x, y, maxSpeed, acceleration, hasGravity, hasFriction);
+        moveLeft = true;
     }
     
 }

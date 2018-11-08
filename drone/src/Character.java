@@ -63,6 +63,10 @@ public class Character {
             return constructDefaultCharacter(g);
         }
         
+        boolean isDrone(){
+            return this instanceof Drone;
+        }
+        
         void setX(int x){
             this.x = x;
         }
@@ -79,7 +83,7 @@ public class Character {
             return x;
         }
         
-        void onKeyAction(){
+        void resetAcceleration(){
             deltaAy = acceleration;
             deltaAx = acceleration;
         }

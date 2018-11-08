@@ -19,8 +19,11 @@ import javax.swing.JPanel;
 import javax.imageio.*;
 import java.awt.image.*;
 import java.io.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Board extends JPanel implements Runnable, MouseListener {
+public class Board extends JPanel implements MouseListener {
 
     boolean ingame = true;
     private Dimension d;
@@ -30,17 +33,15 @@ public class Board extends JPanel implements Runnable, MouseListener {
     BufferedImage img;
 //String message = "Click Board to Start";
     private Thread animator;
-    private Drone p;
-    private Airplane a;
+    private volatile boolean shouldStop = false;
+    private Set<Character> characters;
 
     public Board() {
         addMouseListener(this);
         setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
-        
-        // Initializes drone and adds it to HashSet
-        p = new Drone(300, 850 / 2, 1.5, 0.05, true, true);
-        a = new Airplane(850, 500, 0.03, 1.0, false, false);
+        characters = new HashSet<>();
+        characters = Collections.synchronizedSet(characters);
         setBackground(Color.black);
 
         /*         
@@ -51,53 +52,50 @@ public class Board extends JPanel implements Runnable, MouseListener {
             // System.exit(1);
             }
          */
-        if (animator == null || !ingame) {
-            animator = new Thread(this);
-            animator.start();
-        }
-
         setDoubleBuffered(true);
     }
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
-        
+
         // Background color
         g.setColor(Color.white);
         g.fillRect(0, 0, d.width, d.height);
 //g.fillOval(x,y,r,r);
-        
-        // Drone
-        g = p.getGraphic(g);
-        
-        // Airplane
-        g = a.getGraphic(g);
-        a.x += a.decelerateX();
-        
-        // Takes care of drone movement based on user input
-        if (p.moveUp == true) {
-            p.onKeyAction();
-            p.y -= p.accelerateY();
-        }
 
-        if (p.moveDown == true) {
-            p.onKeyAction();
-            p.y -= p.decelerateY();
-        }
+        // Applies gravity and friction to all characters
+        Character c = null;
 
-        if (p.moveRight == true) {
-            p.onKeyAction();
-            p.x += p.accelerateX();
-        }
+        synchronized (characters) {
+            Iterator<Character> it = characters.iterator();
+            while (it.hasNext()) {
+                c = it.next();
+                g = c.getGraphic(g);
+                c.y -= c.decelerateGravity();
+                c.x += c.decelerateFriction();
 
-        if (p.moveLeft == true) {
-            p.onKeyAction();
-            p.x += p.decelerateX();
+                if (c.moveUp) {
+                    c.y -= c.accelerateY();
+                    c.resetAcceleration();
+                }
+
+                if (c.moveDown) {
+                    c.y -= c.decelerateY();
+                    c.resetAcceleration();
+                }
+
+                if (c.moveRight) {
+                    c.x += c.accelerateX();
+                    c.resetAcceleration();
+                }
+
+                if (c.moveLeft) {
+                    c.x += c.decelerateX();
+                    c.resetAcceleration();
+                }
+            }
         }
-        
-        // Applies gravity and friction to the drone
-        p.y -= p.decelerateGravity();
-        p.x += p.decelerateFriction();
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
@@ -112,16 +110,20 @@ public class Board extends JPanel implements Runnable, MouseListener {
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
     }
-    
-    Drone getDrone(){
-        return p;
+
+    void addCharacter(Character c) {
+        characters.add(c);
+    }
+
+    Set<Character> getCharacters() {
+        return characters;
     }
 
     public void mousePressed(MouseEvent e) {
         /*
         int x = e.getX();
         int y = e.getY();
-        */
+         */
 
     }
 
@@ -140,27 +142,5 @@ public class Board extends JPanel implements Runnable, MouseListener {
     public void mouseClicked(MouseEvent e) {
 
     }
-
-    public void run() {
-
-        long beforeTime, timeDiff, sleep;
-
-        beforeTime = System.currentTimeMillis();
-        int animationDelay = 5;
-        long time
-                = System.currentTimeMillis();
-        while (true) {//infinite loop
-            // spriteManager.update();
-            repaint();
-            try {
-                time += animationDelay;
-                Thread.sleep(Math.max(0, time
-                        - System.currentTimeMillis()));
-            } catch (InterruptedException e) {
-                System.out.println(e);
-            }//end catch
-        }//end while loop
-
-    }//end of run
 
 }//end of class
