@@ -1,4 +1,7 @@
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 public class DroneGame extends JFrame {
@@ -8,11 +11,14 @@ public class DroneGame extends JFrame {
     public DroneGame(){
         b = new Board();
         
-        Drone p = new Drone(300, 850 / 2, 1.5, 0.05, true, true);
-        Airplane a = new Airplane(1200, 500, 100, 0.1, false, false);
+        Drone p;
+        try {
+            p = new Drone(300, 850 / 2, 1.5, 0.05, true, true);
+            b.addCharacter(p);
+        } catch (IOException ex) {
+            Logger.getLogger(DroneGame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        b.addCharacter(a);
-        b.addCharacter(p);
         
         KeyListener k = new KeyListener(this);
         b.addKeyListener(k);

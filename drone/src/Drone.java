@@ -2,14 +2,19 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 
 public class Drone extends Character{
         Graphics2D g;
 	
-	public Drone(double x, double y, double s, double a, boolean g, boolean f) {
-		super (x,y,s,a,g,f);
+	public Drone(double x, double y, double s, double a, boolean g, boolean f) throws IOException {
+		super (x, y, s, a, g, f, ImageIO.read(new File("images/drone.png")));
 	}
         
         /**
@@ -19,9 +24,10 @@ public class Drone extends Character{
          */
         private Graphics2D constructDrone(Graphics g){
             Graphics2D g1 = (Graphics2D) g;
-            g.setColor(Color.BLUE);
-            Rectangle2D rect = new Rectangle2D.Double(getX(), getY(), 20, 20);
-            g1.fill(rect);
+            AffineTransform t = new AffineTransform();
+            t.translate(x,y);
+            t.scale(1,1);
+            g1.drawImage(bi, t, null);
             return g1;
         }
         

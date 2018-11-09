@@ -1,14 +1,21 @@
 
+import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 
-public class Character {
+public class Character{
 	double x;
 	double y;
 	double maxSpeed;
+        protected BufferedImage bi;
         boolean moveUp;
         boolean moveDown;
         boolean moveRight;
@@ -21,7 +28,7 @@ public class Character {
         private final double GRAVITY;
         private final double FRICTION;
 	
-	public Character(double x,double y, double maxSpeed, double acceleration, boolean hasGravity, boolean hasFriction) {
+	public Character(double x,double y, double maxSpeed, double acceleration, boolean hasGravity, boolean hasFriction, BufferedImage bi) {
 		this.x = x;
 		this.y = y;
 		this.maxSpeed = maxSpeed;
@@ -30,6 +37,7 @@ public class Character {
                 deltaAx = acceleration;
                 yVelocity = 0;
                 xVelocity = 0;
+                this.bi = bi;
                 
                 moveUp = false;
                 moveDown = false;

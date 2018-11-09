@@ -1,5 +1,8 @@
 
+import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -40,7 +43,11 @@ public class BoardControllerThread implements Runnable {
         
         while (!shouldStop){
             b.repaint();
-            spawnAirplane(0.05 + (10 - 0.01) * rand.nextDouble(), rand.nextInt(100000) + 1);
+            try {
+                spawnAirplane(0.05 + (10 - 0.01) * rand.nextDouble(), rand.nextInt(100000) + 1);
+            } catch (IOException ex) {
+                Logger.getLogger(BoardControllerThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
             try {
                 time += animationDelay;
                 Thread.sleep(Math.max(0, time
@@ -51,7 +58,7 @@ public class BoardControllerThread implements Runnable {
         }
     }
     
-    private void spawnAirplane(double d, int i){
+    private void spawnAirplane(double d, int i) throws IOException{
         if (d < 2 && i < 800){
             Airplane a = new Airplane(1200 + 50 * d, 100 + i * d, d, 0.005 * d, false, false);
             b.addCharacter(a);

@@ -32,9 +32,7 @@ public class Board extends JPanel implements MouseListener {
     int x = 0;
     BufferedImage img;
 //String message = "Click Board to Start";
-    private Thread animator;
     private Drone drone;
-    private volatile boolean shouldStop = false;
     private Set<Character> characters;
 
     public Board() {
@@ -67,7 +65,6 @@ public class Board extends JPanel implements MouseListener {
 
         // Applies gravity and friction to all characters
         Character c = null;
-        System.out.println(characters);
 
         synchronized (characters) {
             Iterator<Character> it = characters.iterator();
