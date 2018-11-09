@@ -56,7 +56,7 @@ public class BoardControllerThread implements Runnable {
             Airplane a = new Airplane(1200 + 50 * d, 100 + i * d, d, 0.005 * d, false, false);
             b.addCharacter(a);
         } else if (i < 20){
-            Airplane a = new Airplane(1200 + 50 * d, 100 + i * d, d, 0.005 * d, false, false);
+            Airplane a = new Airplane(1200 + 25 * d, 100 + i * d, d, 0.005 * d, false, false);
             b.addCharacter(a);
         }
     }
