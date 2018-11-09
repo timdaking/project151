@@ -113,6 +113,10 @@ public class Character{
             return yVelocity;
         }
         
+        void setYVelocity(double yVelocity){
+            this.yVelocity = yVelocity;
+        }
+        
         /**
          * Gets the velocity in the x direction. A positive value indicates the character is moving right
          * and a negative value indicates the character is moving left.
@@ -120,6 +124,10 @@ public class Character{
          */
         double getXVelocity(){
             return xVelocity;
+        }
+        
+        void setXVelocty(double xVelocity){
+            this.xVelocity = xVelocity;
         }
         
         /**

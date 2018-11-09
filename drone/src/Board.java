@@ -70,12 +70,38 @@ public class Board extends JPanel implements MouseListener {
             Iterator<Character> it = characters.iterator();
             while (it.hasNext()) {
                 c = it.next();
-                
+
                 // Removes characters that are off screen
-                if (c.x < -100){
+                if (c.x < -100) {
                     it.remove();
                 }
-                
+
+                if (c.isDrone()) {
+                    // Prevents drone from going out of bounds on the left
+                    if (c.x < -70) {
+                        c.moveLeft = false;
+                        c.setXVelocty(0);
+                    }
+                    
+                    // Prevents drone from going out of bounds on the right
+                    if (c.x > 1300){
+                        c.moveRight = false;
+                        c.setXVelocty(0);
+                    }
+                    
+                    // Prevents drone from going out of bounds on the top
+                    if (c.y < -80){
+                        c.moveUp = false;
+                        c.setYVelocity(0);
+                    }
+                    
+                    // Prevents drone from going out of bounds on the bottom
+                    if (c.y > 700){
+                        c.moveDown = false;
+                        c.setYVelocity(0);
+                    }
+                }
+
                 g = c.getGraphic(g);
                 c.y -= c.decelerateGravity();
                 c.x += c.decelerateFriction();
@@ -118,7 +144,7 @@ public class Board extends JPanel implements MouseListener {
 
     void addCharacter(Character c) {
         characters.add(c);
-        if (c.isDrone()){
+        if (c.isDrone()) {
             drone = (Drone) c;
         }
     }
