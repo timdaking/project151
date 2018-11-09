@@ -61,9 +61,10 @@ public class Character{
         
         private Graphics2D constructDefaultCharacter(Graphics g){
             Graphics2D g1 = (Graphics2D) g;
-            g.setColor(Color.BLUE);
-            Rectangle2D rect = new Rectangle2D.Double(getX(), getY(), 20, 20);
-            g1.fill(rect);
+            AffineTransform t = new AffineTransform();
+            t.translate(x,y);
+            t.scale(1,1);
+            g1.drawImage(bi, t, null);
             return g1;
         }
         
@@ -113,6 +114,10 @@ public class Character{
             return yVelocity;
         }
         
+        /**
+         * Sets the velocity in the y direction
+         * @param yVelocity the yVelocity
+         */
         void setYVelocity(double yVelocity){
             this.yVelocity = yVelocity;
         }
@@ -126,6 +131,10 @@ public class Character{
             return xVelocity;
         }
         
+        /**
+         * Sets the velocity in the x direction
+         * @param xVelocity the xVelocity
+         */
         void setXVelocty(double xVelocity){
             this.xVelocity = xVelocity;
         }

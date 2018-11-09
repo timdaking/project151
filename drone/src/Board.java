@@ -72,7 +72,7 @@ public class Board extends JPanel implements MouseListener {
                 c = it.next();
 
                 // Removes characters that are off screen
-                if (c.x < -100) {
+                if (c.x < -600) {
                     it.remove();
                 }
 
