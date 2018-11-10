@@ -37,7 +37,6 @@ public class Board extends JPanel implements MouseListener {
 
     public Board() {
         addMouseListener(this);
-        setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
         characters = new HashSet<>();
         characters = Collections.synchronizedSet(characters);
@@ -72,7 +71,7 @@ public class Board extends JPanel implements MouseListener {
                 c = it.next();
 
                 // Removes characters that are off screen
-                if (c.x < -600) {
+                if (c.x < -650) {
                     it.remove();
                 }
 

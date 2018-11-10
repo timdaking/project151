@@ -18,10 +18,12 @@ public class BoardControllerThread implements Runnable {
     private final Thread t;
     private Board b;
     private volatile boolean shouldStop = false;
+    private boolean sanicMode;
     
-    BoardControllerThread(Board b){
+    BoardControllerThread(Board b, boolean sanicMode){
         t = new Thread(this, "Spawner Thread");
         this.b = b;
+        this.sanicMode = sanicMode;
     }
     
     void start(){
@@ -68,6 +70,30 @@ public class BoardControllerThread implements Runnable {
         } else if (i < 10){
             Airplane a = new Airplane(1200 + 25 * d, 100 + i * d, d, 0.005 * d, false, false);
             b.addCharacter(a);
+        }
+        
+        if (sanicMode && d < 5 && i < 500){
+            Sanic s = new Sanic(1200 + 25 * d, 100 + i * d, d, 0.005 * d, false, false);
+            b.addCharacter(s);
+        } else if (sanicMode && d < 10 && i < 100){
+            for (int j = 0; j < 12; j++){
+                Sanic s = new Sanic(1200 + 25 * j, 50 + 50 * j, d + 5, 0.0005 * (j + 1), false, false);
+                b.addCharacter(s);
+            }
+        }
+            
+        if (sanicMode && d < 5 && i < 50){
+            int k = 0;
+            for (int j = 0; j < 12; j++){
+                if (j > 6){
+                    --k;
+                } else {
+                    k = j + 1;
+                }
+                System.out.println(k);
+                Airplane a = new Airplane(1200 + 25 * j, 50 + 50 * j, k, 0.0005 * (k + 1), false, false);
+                b.addCharacter(a);
+            }
         }
     }
     
