@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.imageio.*;
 import java.awt.image.*;
@@ -56,10 +57,16 @@ public class Board extends JPanel implements MouseListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
+        JLabel background;
+        setSize(1200,800);
+        setLayout(null);
+        ImageIcon img = new ImageIcon("images/background.png");
+        background = new JLabel("",img,JLabel.CENTER);
+        background.setBounds(0,0,1200,800);
+        add(background);
         // Background color
-        g.setColor(Color.white);
-        g.fillRect(0, 0, d.width, d.height);
+        //g.setColor("images/background.png");
+        //g.fillRect(0, 0, d.width, d.height);
 //g.fillOval(x,y,r,r);
 
         // Applies gravity and friction to all characters
