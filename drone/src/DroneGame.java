@@ -1,6 +1,8 @@
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -31,8 +33,11 @@ public class DroneGame extends JFrame implements ActionListener {
         
         KeyListener k = new KeyListener(this);
         b.addKeyListener(k);
+        setUp();
         
-        
+    }
+    
+    final void setUp(){
         setTitle("Drone Game");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         lm = getContentPane().getLayout();
@@ -45,7 +50,6 @@ public class DroneGame extends JFrame implements ActionListener {
         normal.addActionListener(this);
         sanic.addActionListener(this);
         
-        
         panel.add(normal);
         panel.add(sanic);
         add(panel);
@@ -54,6 +58,7 @@ public class DroneGame extends JFrame implements ActionListener {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         setVisible(true);
+        b.setDimension(getContentPane().getSize());
         b.setDimension(getSize());
         setResizable(false);
         

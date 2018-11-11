@@ -39,7 +39,6 @@ public class Board extends JPanel implements MouseListener {
         
         characters = new HashSet<>();
         characters = Collections.synchronizedSet(characters);
-        setBackground(Color.black);
         
 
         /*         
@@ -160,7 +159,7 @@ public class Board extends JPanel implements MouseListener {
     
     private void setBackgroundPicture(){
         JLabel background;
-        setSize(1200,800);
+        setSize(BOARD_WIDTH, BOARD_HEIGHT);
         setLayout(null);
         ImageIcon img = new ImageIcon("images/background.png");
         background = new JLabel("",img,JLabel.CENTER);
