@@ -26,8 +26,8 @@ public class Board extends JPanel implements MouseListener {
 
     boolean ingame = true;
     private Dimension d;
-    private double BOARD_WIDTH;
-    private double BOARD_HEIGHT;
+    private int BOARD_WIDTH;
+    private int BOARD_HEIGHT;
     int x = 0;
     BufferedImage img;
 //String message = "Click Board to Start";
@@ -40,6 +40,7 @@ public class Board extends JPanel implements MouseListener {
         characters = new HashSet<>();
         characters = Collections.synchronizedSet(characters);
         setBackground(Color.black);
+        
 
         /*         
              try {
@@ -55,18 +56,7 @@ public class Board extends JPanel implements MouseListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        JLabel background;
-        setSize(1200,800);
-        setLayout(null);
-        ImageIcon img = new ImageIcon("images/background.png");
-        background = new JLabel("",img,JLabel.CENTER);
-        background.setBounds(0,0,1200,800);
-        add(background);
-        // Background color
-        g.setColor(Color.WHITE);
-        Graphics2D g1 = (Graphics2D) g;
-        Rectangle2D rekt = new Rectangle2D.Double(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
-        g1.fill(rekt);
+        
         //g.setColor("images/background.png");
         //g.fillRect(0, 0, d.width, d.height);
 //g.fillOval(x,y,r,r);
@@ -163,8 +153,19 @@ public class Board extends JPanel implements MouseListener {
     
     void setDimension(Dimension d){
         this.d = d;
-        BOARD_WIDTH = d.getWidth();
-        BOARD_HEIGHT = d.getHeight();
+        BOARD_WIDTH = d.width;
+        BOARD_HEIGHT = d.height;
+        setBackgroundPicture();
+    }
+    
+    private void setBackgroundPicture(){
+        JLabel background;
+        setSize(1200,800);
+        setLayout(null);
+        ImageIcon img = new ImageIcon("images/background.png");
+        background = new JLabel("",img,JLabel.CENTER);
+        background.setBounds(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+        add(background);
     }
 
     public void mousePressed(MouseEvent e) {
