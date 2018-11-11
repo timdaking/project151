@@ -12,13 +12,8 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
-
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.imageio.*;
 import java.awt.image.*;
-import java.io.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,8 +22,8 @@ public class Board extends JPanel implements MouseListener {
 
     boolean ingame = true;
     private Dimension d;
-    static final int BOARD_WIDTH = 10000;
-    static final int BOARD_HEIGHT = 10000;
+    private double BOARD_WIDTH;
+    private double BOARD_HEIGHT;
     int x = 0;
     BufferedImage img;
 //String message = "Click Board to Start";
@@ -37,7 +32,7 @@ public class Board extends JPanel implements MouseListener {
 
     public Board() {
         addMouseListener(this);
-        d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
+        
         characters = new HashSet<>();
         characters = Collections.synchronizedSet(characters);
         setBackground(Color.black);
@@ -58,8 +53,10 @@ public class Board extends JPanel implements MouseListener {
         super.paint(g);
 
         // Background color
-        g.setColor(Color.white);
-        g.fillRect(0, 0, d.width, d.height);
+        g.setColor(Color.WHITE);
+        Graphics2D g1 = (Graphics2D) g;
+        Rectangle2D rekt = new Rectangle2D.Double(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+        g1.fill(rekt);
 //g.fillOval(x,y,r,r);
 
         // Applies gravity and friction to all characters
@@ -83,7 +80,7 @@ public class Board extends JPanel implements MouseListener {
                     }
                     
                     // Prevents drone from going out of bounds on the right
-                    if (c.x > 1300){
+                    if (c.x > BOARD_WIDTH - 125){
                         c.moveRight = false;
                         c.setXVelocty(0);
                     }
@@ -95,7 +92,7 @@ public class Board extends JPanel implements MouseListener {
                     }
                     
                     // Prevents drone from going out of bounds on the bottom
-                    if (c.y > 700){
+                    if (c.y > BOARD_HEIGHT - 115){
                         c.moveDown = false;
                         c.setYVelocity(0);
                     }
@@ -150,6 +147,12 @@ public class Board extends JPanel implements MouseListener {
 
     Set<Character> getCharacters() {
         return characters;
+    }
+    
+    void setDimension(Dimension d){
+        this.d = d;
+        BOARD_WIDTH = d.getWidth();
+        BOARD_HEIGHT = d.getHeight();
     }
 
     public void mousePressed(MouseEvent e) {
