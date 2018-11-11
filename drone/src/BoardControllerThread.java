@@ -61,6 +61,7 @@ public class BoardControllerThread implements Runnable {
     }
     
     private void spawnAirplane(double d, int i) throws IOException{
+        // Normal mode spawning
         if (d < 2 && i < 800){
             Airplane a = new Airplane(1200 + 50 * d, 100 + i * d, d, 0.005 * d, false, false);
             b.addCharacter(a);
@@ -72,6 +73,7 @@ public class BoardControllerThread implements Runnable {
             b.addCharacter(a);
         }
         
+        // Sanic mode spawning
         if (sanicMode && d < 5 && i < 500){
             Sanic s = new Sanic(1200 + 25 * d, 100 + i * d, d, 0.005 * d, false, false);
             b.addCharacter(s);
@@ -81,7 +83,8 @@ public class BoardControllerThread implements Runnable {
                 b.addCharacter(s);
             }
         }
-            
+        
+        // Airplane fleet spawn
         if (sanicMode && d < 5 && i < 50){
             int k = 0;
             for (int j = 0; j < 12; j++){
@@ -90,7 +93,6 @@ public class BoardControllerThread implements Runnable {
                 } else {
                     k = j + 1;
                 }
-                System.out.println(k);
                 Airplane a = new Airplane(1200 + 25 * j, 50 + 50 * j, k, 0.0005 * (k + 1), false, false);
                 b.addCharacter(a);
             }

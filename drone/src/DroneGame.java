@@ -20,7 +20,6 @@ public class DroneGame extends JFrame implements ActionListener {
 
     public DroneGame(){
         b = new Board();
-        
         Drone p;
         
         try {
@@ -32,7 +31,8 @@ public class DroneGame extends JFrame implements ActionListener {
         
         KeyListener k = new KeyListener(this);
         b.addKeyListener(k);
-
+        
+        
         setTitle("Drone Game");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         lm = getContentPane().getLayout();
@@ -45,15 +45,18 @@ public class DroneGame extends JFrame implements ActionListener {
         normal.addActionListener(this);
         sanic.addActionListener(this);
         
+        
         panel.add(normal);
         panel.add(sanic);
         add(panel);
         
+        setLocationRelativeTo(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
-        setLocationRelativeTo(null);
         setVisible(true);
+        b.setDimension(getSize());
         setResizable(false);
+        
     }
     
     Board getBoard(){
