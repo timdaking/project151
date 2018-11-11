@@ -12,6 +12,10 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.image.*;
 import java.util.Collections;
@@ -51,12 +55,20 @@ public class Board extends JPanel implements MouseListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
+        JLabel background;
+        setSize(1200,800);
+        setLayout(null);
+        ImageIcon img = new ImageIcon("images/background.png");
+        background = new JLabel("",img,JLabel.CENTER);
+        background.setBounds(0,0,1200,800);
+        add(background);
         // Background color
         g.setColor(Color.WHITE);
         Graphics2D g1 = (Graphics2D) g;
         Rectangle2D rekt = new Rectangle2D.Double(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
         g1.fill(rekt);
+        //g.setColor("images/background.png");
+        //g.fillRect(0, 0, d.width, d.height);
 //g.fillOval(x,y,r,r);
 
         // Applies gravity and friction to all characters
