@@ -1,8 +1,7 @@
-import java.awt.Dimension;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -22,6 +21,7 @@ public class DroneGame extends JFrame implements ActionListener {
 
     public DroneGame(){
         b = new Board();
+        b.setDoubleBuffered(true);
         Drone p;
         
         try {

@@ -8,6 +8,4 @@ class Sanic extends Character {
         super(x, y, maxSpeed, acceleration, hasGravity, hasFriction, ImageIO.read(new File("images/sanic.png")));
         moveLeft = true;
     }
-    
-
 }

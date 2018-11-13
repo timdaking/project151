@@ -6,18 +6,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.awt.geom.Rectangle2D;
-import javax.swing.Timer;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.image.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,43 +19,22 @@ import java.util.Set;
 public class Board extends JPanel implements MouseListener {
 
     boolean ingame = true;
-    private Dimension d;
     private int BOARD_WIDTH;
     private int BOARD_HEIGHT;
-    int x = 0;
-    BufferedImage img;
-//String message = "Click Board to Start";
-    private Drone drone;
     private Set<Character> characters;
 
     public Board() {
-        addMouseListener(this);
+        addMouseListener();
         
         characters = new HashSet<>();
         characters = Collections.synchronizedSet(characters);
-        
-
-        /*         
-             try {
-                img = ImageIO.read(this.getClass().getResource("mount.jpg"));
-            } catch (IOException e) {
-                 System.out.println("Image could not be read");
-            // System.exit(1);
-            }
-         */
-        setDoubleBuffered(true);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        
-        //g.setColor("images/background.png");
-        //g.fillRect(0, 0, d.width, d.height);
-//g.fillOval(x,y,r,r);
 
-        // Applies gravity and friction to all characters
-        Character c = null;
+        Character c;
 
         synchronized (characters) {
             Iterator<Character> it = characters.iterator();
@@ -98,7 +71,8 @@ public class Board extends JPanel implements MouseListener {
                         c.setYVelocity(0);
                     }
                 }
-
+                
+                // Applies gravity and friction to all characters
                 g = c.getGraphic(g);
                 c.y -= c.decelerateGravity();
                 c.x += c.decelerateFriction();
@@ -138,12 +112,13 @@ public class Board extends JPanel implements MouseListener {
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
     }
-
+    
+    private void addMouseListener(){
+        addMouseListener(this);
+    }
+    
     void addCharacter(Character c) {
         characters.add(c);
-        if (c.isDrone()) {
-            drone = (Drone) c;
-        }
     }
 
     Set<Character> getCharacters() {
@@ -151,7 +126,6 @@ public class Board extends JPanel implements MouseListener {
     }
     
     void setDimension(Dimension d){
-        this.d = d;
         BOARD_WIDTH = d.width;
         BOARD_HEIGHT = d.height;
         setBackgroundPicture();

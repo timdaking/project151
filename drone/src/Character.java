@@ -1,14 +1,7 @@
-
-import java.applet.Applet;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 
 public class Character{
@@ -59,7 +52,7 @@ public class Character{
                 }
 	}
         
-        private Graphics2D constructDefaultCharacter(Graphics g){
+        private Graphics2D constructCharacter(Graphics g){
             Graphics2D g1 = (Graphics2D) g;
             AffineTransform t = new AffineTransform();
             t.translate(x,y);
@@ -69,7 +62,7 @@ public class Character{
         }
         
         Graphics2D getGraphic(Graphics g){
-            return constructDefaultCharacter(g);
+            return constructCharacter(g);
         }
         
         boolean isDrone(){

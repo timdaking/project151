@@ -4,12 +4,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author dpham123
@@ -18,7 +12,7 @@ public class BoardControllerThread implements Runnable {
     private final Thread t;
     private Board b;
     private volatile boolean shouldStop = false;
-    private boolean sanicMode;
+    private final boolean sanicMode;
     
     BoardControllerThread(Board b, boolean sanicMode){
         t = new Thread(this, "Spawner Thread");
