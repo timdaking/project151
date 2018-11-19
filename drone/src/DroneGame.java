@@ -74,18 +74,21 @@ public class DroneGame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        BoardControllerThread bct = null;
+        SpawnerThread bct;
+        CollisionMonitorThread cmt;
         if (e.getSource() == normal) {
-            bct = new BoardControllerThread(b, false);
+            bct = new SpawnerThread(b, false);
         } else {
-            bct = new BoardControllerThread(b, true);
+            bct = new SpawnerThread(b, true);
         }
+        cmt = new CollisionMonitorThread(b);
         remove(panel);
         getContentPane().setLayout(lm);
         add(b);
         revalidate();
         b.requestFocus();
         bct.start();
+        cmt.start();
         
     }
 }

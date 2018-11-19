@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -13,6 +14,7 @@ public class Character{
         boolean moveDown;
         boolean moveRight;
         boolean moveLeft;
+        private final int[][] pixelArray;
         private double yVelocity;
         private double xVelocity;
         private final double acceleration;
@@ -31,6 +33,22 @@ public class Character{
                 yVelocity = 0;
                 xVelocity = 0;
                 this.bi = bi;
+                pixelArray = new int[bi.getWidth()][bi.getHeight()];
+                
+                Color myTest = new Color(255, 255, 255);
+                int rgb = myTest.getRGB();
+                for (int i = 0; i < bi.getWidth(); i++){
+                    for (int j = 0; j < bi.getHeight(); j++){
+                        if (bi.getRGB(i, j) == 0){
+                            pixelArray[i][j] = 0;
+                        } else {
+                            pixelArray[i][j] = 1;
+                            bi.setRGB(i, j, rgb);
+                        }
+                        
+                    }
+                }
+                
                 
                 moveUp = false;
                 moveDown = false;
@@ -65,8 +83,24 @@ public class Character{
             return constructCharacter(g);
         }
         
+        int[][] getPixelArray(){
+            return pixelArray;
+        }
+        
+        int getWidth(){
+            return bi.getWidth();
+        }
+        
+        int getHeight() {
+            return bi.getHeight();
+        }
+        
         boolean isDrone(){
             return this instanceof Drone;
+        }
+        
+        boolean isColliding(Character c){
+            return x < 50;
         }
         
         void setX(int x){
@@ -128,7 +162,7 @@ public class Character{
          * Sets the velocity in the x direction
          * @param xVelocity the xVelocity
          */
-        void setXVelocty(double xVelocity){
+        void setXVelocity(double xVelocity){
             this.xVelocity = xVelocity;
         }
         

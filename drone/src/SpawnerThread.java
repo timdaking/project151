@@ -8,13 +8,13 @@ import java.util.logging.Logger;
  *
  * @author dpham123
  */
-public class BoardControllerThread implements Runnable {
+public class SpawnerThread implements Runnable {
     private final Thread t;
-    private Board b;
+    private final Board b;
     private volatile boolean shouldStop = false;
     private final boolean sanicMode;
     
-    BoardControllerThread(Board b, boolean sanicMode){
+    SpawnerThread(Board b, boolean sanicMode){
         t = new Thread(this, "Spawner Thread");
         this.b = b;
         this.sanicMode = sanicMode;
@@ -42,7 +42,7 @@ public class BoardControllerThread implements Runnable {
             try {
                 spawnAirplane(0.05 + (10 - 0.01) * rand.nextDouble(), rand.nextInt(100000) + 1);
             } catch (IOException ex) {
-                Logger.getLogger(BoardControllerThread.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SpawnerThread.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
                 time += animationDelay;

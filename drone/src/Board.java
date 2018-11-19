@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import javax.swing.ImageIcon;
@@ -22,6 +24,7 @@ public class Board extends JPanel implements MouseListener {
     private int BOARD_WIDTH;
     private int BOARD_HEIGHT;
     private Set<Character> characters;
+    private Drone d;
 
     public Board() {
         addMouseListener();
@@ -40,6 +43,17 @@ public class Board extends JPanel implements MouseListener {
             Iterator<Character> it = characters.iterator();
             while (it.hasNext()) {
                 c = it.next();
+                
+                // Testing for "actual position of character"
+                Graphics2D g1 = (Graphics2D) g;
+                if (c.isDrone()){
+                    g1.setColor(Color.GREEN);
+                } else {
+                    g1.setColor(Color.RED);
+                }
+                
+                Rectangle2D rect = new Rectangle2D.Double(c.x, c.y, 10, 10);
+                g1.fill(rect);
 
                 // Removes characters that are off screen
                 if (c.x < -650) {
@@ -50,13 +64,13 @@ public class Board extends JPanel implements MouseListener {
                     // Prevents drone from going out of bounds on the left
                     if (c.x < -70) {
                         c.moveLeft = false;
-                        c.setXVelocty(0);
+                        c.setXVelocity(0);
                     }
                     
                     // Prevents drone from going out of bounds on the right
                     if (c.x > BOARD_WIDTH - 125){
                         c.moveRight = false;
-                        c.setXVelocty(0);
+                        c.setXVelocity(0);
                     }
                     
                     // Prevents drone from going out of bounds on the top
@@ -118,11 +132,18 @@ public class Board extends JPanel implements MouseListener {
     }
     
     void addCharacter(Character c) {
+        if (c.isDrone()){
+            d = (Drone) c;
+        }
         characters.add(c);
     }
 
     Set<Character> getCharacters() {
         return characters;
+    }
+    
+    Drone getDrone(){
+        return d;
     }
     
     void setDimension(Dimension d){
