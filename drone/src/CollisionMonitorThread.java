@@ -53,6 +53,7 @@ class CollisionMonitorThread implements Runnable {
                     
                     if (!c.isDrone() && c.isColliding(d)){
                         it.remove();
+                        // Add scoreboard stuff here
                     }
                 }
             }
