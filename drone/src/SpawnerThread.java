@@ -60,7 +60,7 @@ public class SpawnerThread implements Runnable {
             Airplane a = new Airplane(1200 + 50 * d, 100 + i * d, d, 0.005 * d, false, false);
             b.addCharacter(a);
         } else if (i < 50 && d < 4){
-            MilitaryAirplane ma = new MilitaryAirplane(1200 + 25 * d, 100 + i * d, d, 0.00005 * d, false, false);
+            Airplane ma = new Airplane(1200 + 25 * d, 100 + i * d, d, 0.00005 * d, false, false);
             b.addCharacter(ma);
         } else if (i < 10){
             Airplane a = new Airplane(1200 + 25 * d, 100 + i * d, d, 0.005 * d, false, false);
