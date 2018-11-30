@@ -34,30 +34,35 @@ public class Character {
         yVelocity = 0;
         xVelocity = 0;
         this.bi = bi;
-        pixelArray = new int[bi.getWidth()][bi.getHeight()];
-
-        Color myTest = new Color(255, 255, 255);
-        int rgb = myTest.getRGB();
+        pixelArray = new int[bi.getHeight()][bi.getWidth()];
+        
+        // Set up pixel array
         for (int i = 0; i < bi.getHeight(); i++) {
             for (int j = 0; j < bi.getWidth(); j++) {
-                if (bi.getRGB(j, i) == 0) {
-                    pixelArray[i][j] = 0;
-                } else {
-                    pixelArray[i][j] = 1;
-                    bi.setRGB(j, i, rgb);
+                try {
+                    pixelArray[i][j] = bi.getRGB(j, i);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    System.out.println("Width: " + bi.getWidth() +"Height: " + bi.getHeight());
+                    System.out.println("y: " + pixelArray.length + " x: " + pixelArray[0].length);
                 }
-
+                
             }
         }
-
+        
         /*
-                for (int i = 0; i < pixelArray.length; i++){
-                    for (int j = 0; j < pixelArray[i].length; j++){
-                        System.out.print(pixelArray[i][j]);
-                    }
-                    System.out.println();
+        for (int i = 0; i < bi.getHeight(); i++){
+            for (int j = 0; j < bi.getWidth(); j++){
+                if (pixelArray[i][j] != 0 ){
+                    System.out.print("x");
+                } else {
+                    System.out.print(0);
                 }
-         */
+            }
+            System.out.println();
+        }
+        */
+
         moveUp = false;
         moveDown = false;
         moveRight = false;
@@ -118,10 +123,16 @@ public class Character {
         if (c.x >= x && c.y <= y && c.x <= x + getWidth() && y <= c.y + getHeight()) {
             return checkPixelOverlap(c.x - x, 0, getWidth(), c.y + c.getHeight() - y, c, Corner.TOP_RIGHT);
         }
-        // Case where x coordinate of drone < x coordinate of collinding character &
+        // Case where x coordinate of drone < x coordinate of colliding character &
         // y coordinate of drone < coordinate of colliding character
         if (c.x < x && c.y < y && x < c.x + c.getWidth() && c.y < y + c.getHeight()) {
             return checkPixelOverlap(0, 0, c.x + c.getWidth() - x, c.y + c.getHeight() - y, c, Corner.TOP_LEFT);
+        }
+
+        // Case where x coordinate of drone < x coordinate of colliding character &
+        // y coordinate of drone > coordinate of colliding character
+        if (c.x < x && c.y > y && c.x + c.getWidth() > x && y + getHeight() > c.y) {
+            return checkPixelOverlap(0, c.y - y, c.x + c.getWidth() - x, c.y + c.getHeight() - y, c, Corner.BOTTOM_LEFT);
         }
         return false;
     }
@@ -135,7 +146,7 @@ public class Character {
      * @param c Colliding character
      * @param co
      * @return
-         */
+     */
     private boolean checkPixelOverlap(double x1, double y1, double x2, double y2, Character c, Corner co) {
         if (x2 > getWidth()) {
             x2 = getWidth();
@@ -144,6 +155,7 @@ public class Character {
         if (y2 > getHeight()) {
             y2 = getHeight();
         }
+        
         for (int i = (int) y1; i < (int) y2; i++) {
             for (int j = (int) x1; j < (int) x2; j++) {
                 switch (co) {
@@ -159,6 +171,11 @@ public class Character {
                         break;
                     case TOP_LEFT:
                         if (pixelArray[i][j] != 0 && c.pixelArray[i + (int) (y - c.y)][j + (int) (x - c.x)] != 0) {
+                            return true;
+                        }
+                        break;
+                    case BOTTOM_LEFT:
+                        if (pixelArray[i][j] != 0 && c.pixelArray[i - (int) y1][j + (int) (x - c.x)] != 0) {
                             return true;
                         }
                         break;

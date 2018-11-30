@@ -43,17 +43,6 @@ public class Board extends JPanel implements MouseListener {
             Iterator<Character> it = characters.iterator();
             while (it.hasNext()) {
                 c = it.next();
-                
-                // Testing for "actual position of character"
-                Graphics2D g1 = (Graphics2D) g;
-                if (c.isDrone()){
-                    g1.setColor(Color.GREEN);
-                } else {
-                    g1.setColor(Color.RED);
-                }
-                
-                Rectangle2D rect = new Rectangle2D.Double(c.x, c.y, 10, 10);
-                g1.fill(rect);
 
                 // Removes characters that are off screen
                 if (c.x < -650) {
