@@ -25,6 +25,8 @@ public class Board extends JPanel implements MouseListener {
 	private Set<Character> characters;
 	private Drone d;
 	private long startTime;
+	private int gamesPlayed;
+	private int gamesWon;
 
 	public Board() {
 		addMouseListener();
@@ -32,6 +34,8 @@ public class Board extends JPanel implements MouseListener {
 		characters = new HashSet<>();
 		characters = Collections.synchronizedSet(characters);
 		startTime = System.currentTimeMillis();
+		gamesPlayed = 0;
+		gamesWon = 0;
 	}
 
 	@Override
@@ -107,8 +111,17 @@ public class Board extends JPanel implements MouseListener {
 		g.setColor(Color.black);
 		g.setFont(small);
 		g.drawString((System.currentTimeMillis() - startTime) / 1000 - 2 + " seconds", 10, 20);
-		g.drawString("Collisions: " + CollisionMonitorThread.collisions, BOARD_WIDTH / 2, 20);
-		g.drawString("Games Won: 0/0", BOARD_WIDTH - 200, 20);
+		g.drawString("Collisions: " + CollisionMonitorThread.collisions, BOARD_WIDTH / 2 - 100, 20);
+
+		if (((System.currentTimeMillis() - startTime) / 1000 - 2) > 90) {
+			gamesPlayed++;
+			if (CollisionMonitorThread.collisions < 2)
+				gamesWon++;
+			CollisionMonitorThread.collisions = 0;
+			startTime = System.currentTimeMillis() + 2;
+			/** iterate and delete everything from characters but drone **/
+		}
+		g.drawString("Games Won: " + gamesWon + " / " + gamesPlayed, BOARD_WIDTH - 200, 20);
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
