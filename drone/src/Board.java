@@ -119,7 +119,7 @@ public class Board extends JPanel implements MouseListener {
 				gamesWon++;
 			CollisionMonitorThread.collisions = 0;
 			startTime = System.currentTimeMillis() + 2;
-			/** iterate and delete everything from characters but drone **/
+			removeAllCharactersButDrone();
 		}
 		g.drawString("Games Won: " + gamesWon + " / " + gamesPlayed, BOARD_WIDTH - 200, 20);
 		Toolkit.getDefaultToolkit().sync();
@@ -129,6 +129,20 @@ public class Board extends JPanel implements MouseListener {
 	private void addMouseListener() {
 		addMouseListener(this);
 	}
+        
+        void removeAllCharactersButDrone(){
+            synchronized (characters){
+                Iterator<Character> it = characters.iterator();
+                Character c;
+                
+                while (it.hasNext()){
+                    c = it.next();
+                    if (!c.isDrone()){
+                        it.remove();
+                    }
+                }
+            }
+        }
 
 	void addCharacter(Character c) {
 		if (c.isDrone()) {
